@@ -7,7 +7,7 @@ import { realizarLoginComSucesso, realizarLoginInvalido } from './helpers/loginH
 import { realizarLogout } from './helpers/logoutHelper';
 
 describe('Automation Exercise', () => {
-    it.only('deve cadastrar um novo usuário, logar e deletar conta', () => {
+    it('deve cadastrar um novo usuário, logar e deletar conta', () => {
         cy.criarUsuarioAleatorio().then((usuario) => {
             cadastrarConta(usuario);
             SignupPage.clicarContinuar().validarUsuarioLogado();
@@ -15,7 +15,7 @@ describe('Automation Exercise', () => {
         });
     });
 
-    it('deve cadastrar novo usuário, fazer login com email e senha corretos e deletar usuario', () => {
+    it('deve cadastrar novo usuário, fazer login com email e senha corretos, fazer logout e deletar conta', () => {
         cy.criarUsuarioAleatorio().then((usuario) => {
             cadastrarConta(usuario);
             SignupPage.clicarContinuar().validarUsuarioLogado();
@@ -23,16 +23,6 @@ describe('Automation Exercise', () => {
             LoginPage.deslogar();
             realizarLoginComSucesso(usuario);
             deletarConta();
-        });
-    });
-
-    it('deve cadastrar um novo usuário e fazer logout', () => {
-        cy.criarUsuarioAleatorio().then((usuario) => {
-            cadastrarConta(usuario);
-            SignupPage.clicarContinuar().validarUsuarioLogado();
-
-            LoginPage.deslogar();
-            LoginPage.validarTelaLogin();
         });
     });
 
