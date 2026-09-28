@@ -1,183 +1,59 @@
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
+import { cadastrarConta } from './helpers/cadastroContaHelper';
+import { deletarConta } from './helpers/exclusaoContaHelper';
+import { realizarLoginComSucesso, realizarLoginInvalido } from './helpers/loginHelper';
+import { realizarLogout } from './helpers/logoutHelper';
+
 describe('Automation Exercise', () => {
-    it('deve cadastrar novo usuario, fazer login e excluir conta', () => {
+    it.only('deve cadastrar um novo usuário, logar e deletar conta', () => {
         cy.criarUsuarioAleatorio().then((usuario) => {
-            cy.visit('https://automationexercise.com/');
-            cy.contains('a', 'Signup / Login').click();
-            cy.contains('New User Signup!').should('be.visible');
-
-            cy.get('input[data-qa="signup-name"]').type(usuario.fullName);
-            cy.get('input[data-qa="signup-email"]').type(usuario.email);
-            cy.get('button[data-qa="signup-button"]').click();
-
-            cy.contains('Enter Account Information').should('be.visible');
-
-            cy.get(`input[id="${usuario.gender}"]`).check({ force: true });
-            cy.get('input[data-qa="password"]').type(usuario.password);
-            cy.get('select[data-qa="days"]').select(usuario.days);
-            cy.get('select[data-qa="months"]').select(usuario.months);
-            cy.get('select[data-qa="years"]').select(usuario.years);
-            cy.get('#newsletter').check({ force: true });
-            cy.get('#optin').check({ force: true });
-
-            cy.get('input[data-qa="first_name"]').type(usuario.firstName);
-            cy.get('input[data-qa="last_name"]').type(usuario.lastName);
-            cy.get('input[data-qa="company"]').type(usuario.company);
-            cy.get('input[data-qa="address"]').type(usuario.address);
-            cy.get('select[data-qa="country"]').select(usuario.country);
-            cy.get('input[data-qa="state"]').type(usuario.state);
-            cy.get('input[data-qa="city"]').type(usuario.city);
-            cy.get('input[data-qa="zipcode"]').type(usuario.zipCode);
-            cy.get('input[data-qa="mobile_number"]').type(usuario.mobile);
-
-            cy.get('button[data-qa="create-account"]').click();
-            cy.contains('Account Created!').should('be.visible');
-
-            cy.contains('a', 'Continue').click();
-            cy.contains('Logged in as').should('be.visible');
-
-            cy.contains('Delete Account').click();
-            cy.contains('Account Deleted!').should('be.visible');
-            cy.contains('a', 'Continue').click();
+            cadastrarConta(usuario);
+            SignupPage.clicarContinuar().validarUsuarioLogado();
+            deletarConta();
         });
     });
 
-    it('deve cadastrar novo usuário e fazer login com email e senha corretos', () => {
+    it('deve cadastrar novo usuário, fazer login com email e senha corretos e deletar usuario', () => {
         cy.criarUsuarioAleatorio().then((usuario) => {
-            cy.visit('https://automationexercise.com/');
-            cy.get('a[href="/login"]').click();
-            cy.contains('New User Signup!').should('be.visible');
+            cadastrarConta(usuario);
+            SignupPage.clicarContinuar().validarUsuarioLogado();
 
-            cy.get('input[data-qa="signup-name"]').type(usuario.fullName);
-            cy.get('input[data-qa="signup-email"]').type(usuario.email);
-            cy.get('button[data-qa="signup-button"]').click();
+            LoginPage.deslogar();
+            realizarLoginComSucesso(usuario);
+            deletarConta();
+        });
+    });
 
-            cy.contains('Enter Account Information').should('be.visible');
-            cy.get(`input[id="${usuario.gender}"]`).check({ force: true });
-            cy.get('input[data-qa="password"]').type(usuario.password);
-            cy.get('select[data-qa="days"]').select(usuario.days);
-            cy.get('select[data-qa="months"]').select(usuario.months);
-            cy.get('select[data-qa="years"]').select(usuario.years);
-            cy.get('input[data-qa="first_name"]').type(usuario.firstName);
-            cy.get('input[data-qa="last_name"]').type(usuario.lastName);
-            cy.get('input[data-qa="company"]').type(usuario.company);
-            cy.get('input[data-qa="address"]').type(usuario.address);
-            cy.get('select[data-qa="country"]').select(usuario.country);
-            cy.get('input[data-qa="state"]').type(usuario.state);
-            cy.get('input[data-qa="city"]').type(usuario.city);
-            cy.get('input[data-qa="zipcode"]').type(usuario.zipCode);
-            cy.get('input[data-qa="mobile_number"]').type(usuario.mobile);
-            cy.get('button[data-qa="create-account"]').click();
+    it('deve cadastrar um novo usuário e fazer logout', () => {
+        cy.criarUsuarioAleatorio().then((usuario) => {
+            cadastrarConta(usuario);
+            SignupPage.clicarContinuar().validarUsuarioLogado();
 
-            cy.contains('Account Created!').should('be.visible');
-            cy.contains('a', 'Continue').click();
-            cy.contains('Logged in as').should('be.visible');
-
-            cy.get('a[href="/logout"]').click();
-            cy.visit('https://automationexercise.com/login');
-            cy.contains('Login to your account').should('be.visible');
-
-            cy.get('input[data-qa="login-email"]').should('be.visible').clear().type(usuario.email);
-            cy.get('input[data-qa="login-password"]').should('be.visible').clear().type(usuario.password);
-            cy.get('button[data-qa="login-button"]').click();
-
-            cy.contains('Logged in as').should('be.visible');
-            cy.contains('Delete Account').click();
-            cy.contains('Account Deleted!').should('be.visible');
+            LoginPage.deslogar();
+            LoginPage.validarTelaLogin();
         });
     });
 
     it('deve tentar logar com email e senha incorretos', () => {
         cy.criarUsuarioAleatorio().then((usuario) => {
-            cy.visit('https://automationexercise.com/');
-            cy.get('a[href="/login"]').click();
-            cy.contains('New User Signup!').should('be.visible');
-
-            cy.contains('Login to your account').should('be.visible');
-
-            cy.get('input[data-qa="login-email"]').should('be.visible').clear().type(usuario.email);
-            cy.get('input[data-qa="login-password"]').should('be.visible').clear().type('senhaIncorreta123');
-            cy.get('button[data-qa="login-button"]').click();
-
-            cy.contains('Your email or password is incorrect!').should('be.visible');
+            HomePage.visit().acessarLogin();
+            realizarLoginInvalido(usuario.email, 'senhaIncorreta123', 'Your email or password is incorrect!');
         });
     });
 
-    it('deve cadastrar novo usuário e fazer logout', () => {
+    it('deve cadastrar um novo usuário e tentar cadastrar novamente com o mesmo email', () => {
         cy.criarUsuarioAleatorio().then((usuario) => {
-            cy.visit('https://automationexercise.com/');
-            cy.get('a[href="/login"]').click();
-            cy.contains('New User Signup!').should('be.visible');
+            cadastrarConta(usuario);
+            SignupPage.clicarContinuar().validarUsuarioLogado();
 
-            cy.get('input[data-qa="signup-name"]').type(usuario.fullName);
-            cy.get('input[data-qa="signup-email"]').type(usuario.email);
-            cy.get('button[data-qa="signup-button"]').click();
+            LoginPage.deslogar();
+            LoginPage.visitar().validarTelaLogin();
 
-            cy.contains('Enter Account Information').should('be.visible');
-            cy.get(`input[id="${usuario.gender}"]`).check({ force: true });
-            cy.get('input[data-qa="password"]').type(usuario.password);
-            cy.get('select[data-qa="days"]').select(usuario.days);
-            cy.get('select[data-qa="months"]').select(usuario.months);
-            cy.get('select[data-qa="years"]').select(usuario.years);
-            cy.get('input[data-qa="first_name"]').type(usuario.firstName);
-            cy.get('input[data-qa="last_name"]').type(usuario.lastName);
-            cy.get('input[data-qa="company"]').type(usuario.company);
-            cy.get('input[data-qa="address"]').type(usuario.address);
-            cy.get('select[data-qa="country"]').select(usuario.country);
-            cy.get('input[data-qa="state"]').type(usuario.state);
-            cy.get('input[data-qa="city"]').type(usuario.city);
-            cy.get('input[data-qa="zipcode"]').type(usuario.zipCode);
-            cy.get('input[data-qa="mobile_number"]').type(usuario.mobile);
-            cy.get('button[data-qa="create-account"]').click();
-
-            cy.contains('Account Created!').should('be.visible');
-            cy.contains('a', 'Continue').click();
-            cy.contains('Logged in as').should('be.visible');
-
-            cy.get('a[href="/logout"]').click();
-            cy.visit('https://automationexercise.com/login');
-            cy.contains('Login to your account').should('be.visible');
+            SignupPage.preencherSignup(usuario.fullName, usuario.email)
+                .clicarSignup()
+                .validarEmailJaExiste();
         });
     });
-    
-    it.only('deve cadastrar um novo usuário e tentar cadastrar novamente com o mesmo email', () => {
-        cy.criarUsuarioAleatorio().then((usuario) => {
-            cy.visit('https://automationexercise.com/');
-            cy.get('a[href="/login"]').click();
-            cy.get('input[data-qa="signup-name"]').type(usuario.fullName);
-            cy.get('input[data-qa="signup-email"]').type(usuario.email);
-            cy.get('button[data-qa="signup-button"]').click();
-
-            cy.get(`input[id="${usuario.gender}"]`).check({ force: true });
-            cy.get('input[data-qa="password"]').type(usuario.password);
-            cy.get('select[data-qa="days"]').select(usuario.days);
-            cy.get('select[data-qa="months"]').select(usuario.months);
-            cy.get('select[data-qa="years"]').select(usuario.years);
-            cy.get('input[data-qa="first_name"]').type(usuario.firstName);
-            cy.get('input[data-qa="last_name"]').type(usuario.lastName);
-            cy.get('input[data-qa="company"]').type(usuario.company);
-            cy.get('input[data-qa="address"]').type(usuario.address);
-            cy.get('select[data-qa="country"]').select(usuario.country);
-            cy.get('input[data-qa="state"]').type(usuario.state);
-            cy.get('input[data-qa="city"]').type(usuario.city);
-            cy.get('input[data-qa="zipcode"]').type(usuario.zipCode);
-            cy.get('input[data-qa="mobile_number"]').type(usuario.mobile);
-            cy.get('button[data-qa="create-account"]').click();
-            cy.get('.title').should('contain', 'Account Created!');
-
-            cy.contains('a', 'Continue').click();
-            cy.contains('Logged in as').should('be.visible');
-
-            cy.get('a[href="/logout"]').click();
-            cy.visit('https://automationexercise.com/login');
-            cy.contains('Login to your account').should('be.visible');
-
-            cy.visit('https://automationexercise.com/login');
-            cy.contains('Login to your account').should('be.visible');
-            cy.get('input[data-qa="signup-name"]').should('be.visible').clear().type(usuario.fullName);
-            cy.get('input[data-qa="signup-email"]').should('be.visible').clear().type(usuario.email);
-            cy.get('button[data-qa="signup-button"]').click();
-            cy.contains('Email Address already exist!').should('be.visible');
-        });
-    });
-
 });
