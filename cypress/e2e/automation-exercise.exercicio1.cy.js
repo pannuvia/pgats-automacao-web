@@ -33,6 +33,16 @@ describe('Automation Exercise', () => {
         });
     });
 
+    it('deve cadastrar um novo usuário e fazer logout', () => {
+        cy.criarUsuarioAleatorio().then((usuario) => {
+            cadastrarConta(usuario);
+            SignupPage.clicarContinuar().validarUsuarioLogado();
+
+            LoginPage.deslogar();
+            LoginPage.validarTelaLogin();
+        });
+    });
+
     it('deve cadastrar um novo usuário e tentar cadastrar novamente com o mesmo email', () => {
         cy.criarUsuarioAleatorio().then((usuario) => {
             cadastrarConta(usuario);
