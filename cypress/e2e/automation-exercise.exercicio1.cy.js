@@ -26,7 +26,7 @@ describe('Automation Exercise', () => {
         });
     });
 
-    it.only('deve cadastrar, validar login e excluir conta', () => {
+    it('deve cadastrar novo usuario, fazer login e excluir conta', () => {
         cy.criarUsuarioAleatorio().then((usuario) => {
             cy.visit('https://automationexercise.com/');
             cy.contains('a', 'Signup / Login').click();
