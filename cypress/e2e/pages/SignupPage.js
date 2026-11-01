@@ -1,10 +1,15 @@
 class SignupPage {
-  abrirCadastro() {
-    cy.get('a[href="/login"]').click();
+  visitar() {
+    cy.visit('https://automationexercise.com/login');
     return this;
   }
 
-  preencherSignup(nome, email) {
+  validarTelaCadastro() {
+    cy.contains('New User Signup!').should('be.visible');
+    return this;
+  }
+
+  preencherCadastro(nome, email) {
     cy.get('input[data-qa="signup-name"]').should('be.visible').clear().type(nome);
     cy.get('input[data-qa="signup-email"]').should('be.visible').clear().type(email);
     return this;
@@ -15,12 +20,13 @@ class SignupPage {
     return this;
   }
 
-  validarNewUserSignup() {
-    cy.contains('New User Signup!').should('be.visible');
+  abrirCadastro() {
+    this.visitar();
+    this.validarTelaCadastro();
     return this;
   }
 
-  validarEnterAcoountInformation() {
+  validarTelaDadosCadastro() {
     cy.contains('Enter Account Information').should('be.visible');
     return this;
   }
