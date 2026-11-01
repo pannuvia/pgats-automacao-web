@@ -57,6 +57,9 @@ A execução gera relatório JUnit e salva artefatos em `cypress/reports` para a
 ## Resultados esperados
 A suíte cobre cenários de cadastro, login, exclusão, pesquisa, inscrição e compra, e foi validada com execução bem-sucedida em ambiente headless.
 
+## Status do projeto
+O projeto foi integrado à branch principal `main` e a execução da suíte foi validada com sucesso em ambiente headless. A estrutura está organizada em POM, factories, helpers, constantes e pipeline de CI, mantendo a automação em um padrão reutilizável e sustentável.
+
 ## Checklist de avaliação
 1. Execução via GitHub Actions — Implementado
 2. Execução sem quebras — Implementado
