@@ -1,41 +1,42 @@
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
-import { cadastrarConta } from './helpers/cadastroContaHelper';
-import { deletarConta } from './helpers/exclusaoContaHelper';
-import { realizarLoginComSucesso, realizarLoginInvalido } from './helpers/loginHelper';
-import { realizarLogout } from './helpers/logoutHelper';
+import ContactUsPage from './pages/ContactUsPage';
+import { criarConta } from './helpers/cadastroContaHelper';
+import { excluirConta } from './helpers/exclusaoContaHelper';
+import { logarComSucesso, tentarLoginInvalido } from './helpers/loginHelper';
+import { deslogar } from './helpers/logoutHelper';
 
 describe('Automation Exercise', () => {
-    it('deve cadastrar um novo usuário, logar e deletar conta', () => {
+    it('Cenario 1: deve cadastrar um novo usuário, logar e deletar conta', () => {
         cy.criarUsuarioAleatorio().then((usuario) => {
-            cadastrarConta(usuario);
+            criarConta(usuario);
             SignupPage.clicarContinuar().validarUsuarioLogado();
-            deletarConta();
+            excluirConta();
         });
     });
 
-    it('deve cadastrar novo usuário, fazer login com email e senha corretos, fazer logout e deletar conta', () => {
+    it('Cenario 2: deve cadastrar novo usuário, fazer login com email e senha corretos, fazer logout e deletar conta', () => {
         cy.criarUsuarioAleatorio().then((usuario) => {
-            cadastrarConta(usuario);
+            criarConta(usuario);
             SignupPage.clicarContinuar().validarUsuarioLogado();
 
             LoginPage.deslogar();
-            realizarLoginComSucesso(usuario);
-            deletarConta();
+            logarComSucesso(usuario);
+            excluirConta();
         });
     });
 
-    it('deve tentar logar com email e senha incorretos', () => {
+    it('Cenario 3: deve tentar logar com email e senha incorretos', () => {
         cy.criarUsuarioAleatorio().then((usuario) => {
-            HomePage.visit().acessarLogin();
-            realizarLoginInvalido(usuario.email, 'senhaIncorreta123', 'Your email or password is incorrect!');
+            HomePage.visitar().clicarLogin();
+            tentarLoginInvalido(usuario.email, 'senhaIncorreta123', 'Your email or password is incorrect!');
         });
     });
 
-    it('deve cadastrar um novo usuário e fazer logout', () => {
+    it('Cenario 4: deve cadastrar um novo usuário e fazer logout', () => {
         cy.criarUsuarioAleatorio().then((usuario) => {
-            cadastrarConta(usuario);
+            criarConta(usuario);
             SignupPage.clicarContinuar().validarUsuarioLogado();
 
             LoginPage.deslogar();
@@ -43,17 +44,37 @@ describe('Automation Exercise', () => {
         });
     });
 
-    it('deve cadastrar um novo usuário e tentar cadastrar novamente com o mesmo email', () => {
+    it('Cenario 5: deve cadastrar um novo usuário e tentar cadastrar novamente com o mesmo email', () => {
         cy.criarUsuarioAleatorio().then((usuario) => {
-            cadastrarConta(usuario);
+            criarConta(usuario);
             SignupPage.clicarContinuar().validarUsuarioLogado();
 
             LoginPage.deslogar();
             LoginPage.visitar().validarTelaLogin();
 
-            SignupPage.preencherSignup(usuario.fullName, usuario.email)
+            SignupPage.preencherCadastro(usuario.fullName, usuario.email)
                 .clicarSignup()
                 .validarEmailJaExiste();
         });
+    });
+
+    it('Cenario 6: deve enviar uma mensagem pelo formulário de contato', () => {
+        HomePage.visitar()
+            .validarTelaHome()
+            .clicarContato();
+
+        ContactUsPage.validarTelaContato()
+            .preencherFormulario({
+                nome: 'Pannuvia Monteiro',
+                email: 'pannuvia@teste.com',
+                assunto: 'Dúvida sobre produto',
+                mensagem: 'Mensagem de teste automatizado.'
+            })
+            .anexarArquivo('cypress/fixtures/contact-message.txt')
+            .clicarSubmit()
+            .validarMensagemSucesso()
+            .clicarHome();
+
+        HomePage.validarTelaHome();
     });
 });

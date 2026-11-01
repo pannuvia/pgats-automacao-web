@@ -1,15 +1,12 @@
 import HomePage from '../pages/HomePage';
 import SignupPage from '../pages/SignupPage';
 
-export function cadastrarConta(usuario) {
-  HomePage.visit();
-  HomePage.validarLoginVisivel();
-
+export function criarConta(usuario) {
+  HomePage.visitar().clicarLogin();
+  SignupPage.validarTelaCadastro();
+  SignupPage.preencherCadastro(usuario.fullName, usuario.email);
   SignupPage.clicarSignup();
-  SignupPage.validarNewUserSignup();
-  SignupPage.preencherSignup(usuario.fullName, usuario.email);
-  SignupPage.clicarSignup();
-  SignupPage.validarEnterAcoountInformation();
+  SignupPage.validarTelaDadosCadastro();
   SignupPage.preencherDadosCadastro(usuario);
   SignupPage.clicarCriarConta();
   SignupPage.validarContaCriada();

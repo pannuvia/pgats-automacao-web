@@ -4,10 +4,6 @@ class LoginPage {
     return this;
   }
 
-  acessarPagina() {
-    return this.visitar();
-  }
-
   validarTelaLogin() {
     cy.contains('Login to your account').should('be.visible');
     return this;
@@ -21,6 +17,12 @@ class LoginPage {
 
   clicarLogin() {
     cy.get('button[data-qa="login-button"]').click();
+    return this;
+  }
+
+  abrirLogin() {
+    this.visitar();
+    this.validarTelaLogin();
     return this;
   }
 

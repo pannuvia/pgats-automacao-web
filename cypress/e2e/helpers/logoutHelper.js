@@ -1,5 +1,5 @@
 import LoginPage from '../pages/LoginPage';
 
-export function realizarLogout() {
+export function deslogar() {
   LoginPage.deslogar();
 }

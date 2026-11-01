@@ -1,20 +1,27 @@
 class HomePage {
-  visit() {
+  visitar() {
     cy.visit('https://automationexercise.com/');
     return this;
   }
 
-  acessarLogin() {
+  validarTelaHome() {
+    cy.get('a[href="/login"]').should('be.visible');
+    return this;
+  }
+
+  clicarLogin() {
     cy.get('a[href="/login"]').should('be.visible').click();
     return this;
   }
 
-  validarLoginVisivel() {
-    return this.acessarLogin();
+  clicarContato() {
+    cy.get('a[href="/contact_us"]').should('be.visible').click();
+    return this;
   }
 
-  validarHomeVisivel() {
-    cy.get('a[href="/login"]').should('be.visible');
+  abrirHome() {
+    this.visitar();
+    this.validarTelaHome();
     return this;
   }
 }
