@@ -3,6 +3,8 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import ContactUsPage from './pages/ContactUsPage';
 import ProductsPage from './pages/ProductsPage';
+import CartPage from './pages/CartPage';
+import CheckoutPage from './pages/CheckoutPage';
 import { criarConta } from './helpers/cadastroContaHelper';
 import { excluirConta } from './helpers/exclusaoContaHelper';
 import { logarComSucesso, tentarLoginInvalido } from './helpers/loginHelper';
@@ -117,10 +119,10 @@ describe('Automation Exercise', () => {
             SignupPage.clicarContinuar().validarUsuarioLogado();
 
             HomePage.clicarProdutos();
-            ProductsPage.adicionarPrimeiroProdutoAoCarrinho()
-                .validarCarrinho()
-                .clicarProceedToCheckout()
-                .validarDetalhesCheckout()
+            ProductsPage.adicionarPrimeiroProdutoAoCarrinho();
+            CartPage.validarCarrinho()
+                .clicarProceedToCheckout();
+            CheckoutPage.validarDetalhesCheckout()
                 .preencherComentario('Pedido de teste para checkout após cadastro.')
                 .clicarPlaceOrder()
                 .preencherDadosPagamento({
@@ -147,10 +149,10 @@ describe('Automation Exercise', () => {
             SignupPage.validarUsuarioLogado();
 
             HomePage.clicarProdutos();
-            ProductsPage.adicionarPrimeiroProdutoAoCarrinho()
-                .validarCarrinho()
-                .clicarProceedToCheckout()
-                .validarDetalhesCheckout()
+            ProductsPage.adicionarPrimeiroProdutoAoCarrinho();
+            CartPage.validarCarrinho()
+                .clicarProceedToCheckout();
+            CheckoutPage.validarDetalhesCheckout()
                 .preencherComentario('Pedido de teste para checkout com login prévio.')
                 .clicarPlaceOrder()
                 .preencherDadosPagamento({
