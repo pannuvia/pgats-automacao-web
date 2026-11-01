@@ -2,6 +2,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import ContactUsPage from './pages/ContactUsPage';
+import ProductsPage from './pages/ProductsPage';
 import { criarConta } from './helpers/cadastroContaHelper';
 import { excluirConta } from './helpers/exclusaoContaHelper';
 import { logarComSucesso, tentarLoginInvalido } from './helpers/loginHelper';
@@ -76,5 +77,16 @@ describe('Automation Exercise', () => {
             .clicarHome();
 
         HomePage.validarTelaHome();
+    });
+
+    it('Cenario 8: deve verificar a página de produtos e o detalhe do primeiro produto', () => {
+        HomePage.visitar()
+            .validarTelaHome()
+            .clicarProdutos();
+
+        ProductsPage.validarTelaProdutos()
+            .validarListaProdutos()
+            .clicarPrimeiroViewProduct()
+            .validarDetalhesProduto();
     });
 });
