@@ -19,6 +19,11 @@ class HomePage {
     return this;
   }
 
+  clicarProdutos() {
+    cy.get('a[href="/products"]').should('be.visible').click();
+    return this;
+  }
+
   abrirHome() {
     this.visitar();
     this.validarTelaHome();
