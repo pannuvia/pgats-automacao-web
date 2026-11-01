@@ -99,4 +99,16 @@ describe('Automation Exercise', () => {
             .pesquisarProduto('Blue Top')
             .validarProdutosPesquisados();
     });
+
+    it('Cenario 10: deve verificar a inscrição na home page', () => {
+        const email = `teste-pannuvia-${Date.now()}@automacao.com`;
+
+        HomePage.visitar()
+            .validarTelaHome()
+            .rolarParaRodape()
+            .validarInscricao()
+            .preencherInscricao(email)
+            .clicarBotaoInscricao()
+            .validarMensagemInscricaoSucesso();
+    });
 });

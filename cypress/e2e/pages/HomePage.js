@@ -24,6 +24,31 @@ class HomePage {
     return this;
   }
 
+  rolarParaRodape() {
+    cy.scrollTo('bottom');
+    return this;
+  }
+
+  validarInscricao() {
+    cy.contains(/subscription/i).should('be.visible');
+    return this;
+  }
+
+  preencherInscricao(email) {
+    cy.get('#susbscribe_email').should('be.visible').clear().type(email);
+    return this;
+  }
+
+  clicarBotaoInscricao() {
+    cy.get('#subscribe').should('be.visible').click();
+    return this;
+  }
+
+  validarMensagemInscricaoSucesso() {
+    cy.contains('You have been successfully subscribed!').should('be.visible');
+    return this;
+  }
+
   abrirHome() {
     this.visitar();
     this.validarTelaHome();
