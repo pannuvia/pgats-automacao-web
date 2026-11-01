@@ -1,0 +1,18 @@
+{
+  "reporterEnabled": "cypress-mochawesome-reporter, mocha-junit-reporter",
+  "cypressMochawesomeReporterReporterOptions": {
+    "reportDir": "cypress/reports/html",
+    "reportFilename": "relatorio-[datetime]",
+    "charts": true,
+    "embeddedScreenshots": true,
+    "inlineAssets": true,
+    "saveAllAttempts": false,
+    "reportPageTitle": "Automation Exercise - Relatório",
+    "embeddedJson": true,
+    "overwrite": false
+  },
+  "mochaJunitReporterReporterOptions": {
+    "mochaFile": "cypress/reports/junit/results-[datetime].xml",
+    "toConsole": true
+  }
+}
