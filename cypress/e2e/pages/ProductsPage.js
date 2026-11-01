@@ -11,12 +11,12 @@ class ProductsPage {
   }
 
   validarListaProdutos() {
-    cy.get('.product-image-wrapper, .single-products').should('have.length.at.least', 1);
+    cy.get('.single-products').should('have.length.at.least', 1);
     return this;
   }
 
   clicarPrimeiroViewProduct() {
-    cy.get('.product-image-wrapper').first().contains('View Product').click();
+    cy.get('a[href*="/product_details/"]').first().click();
     return this;
   }
 
@@ -31,7 +31,7 @@ class ProductsPage {
   }
 
   adicionarPrimeiroProdutoAoCarrinho() {
-    cy.get('.product-image-wrapper').first().contains('Add to cart').click({ force: true });
+    cy.get('a[data-product-id]').first().click({ force: true });
     cy.contains('View Cart').click();
     return this;
   }

@@ -27,3 +27,12 @@ jobs:
 
       - name: Executar testes Cypress
         run: npx cypress run --spec cypress/e2e/automation-exercise.cy.js --headless
+
+      - name: Upload de relatórios Cypress
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-junit-report
+          path: cypress/reports
+          if-no-files-found: warn
+          retention-days: 7

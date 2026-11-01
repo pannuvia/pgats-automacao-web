@@ -1,6 +1,8 @@
+import { BASE_URL, ROUTES } from '../../support/constants';
+
 class HomePage {
   visitar() {
-    cy.visit('https://automationexercise.com/');
+    cy.visit(`${BASE_URL}${ROUTES.home}`);
     return this;
   }
 
