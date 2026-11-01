@@ -1,14 +1,20 @@
 const { defineConfig } = require('cypress');
 
 module.exports = defineConfig({
-  reporter: 'junit',
+  reporter: 'cypress-mochawesome-reporter',
   reporterOptions: {
-    mochaFile: 'cypress/reports/junit/results-[hash].xml',
-    toConsole: true,
+    charts: true,
+    embeddedScreenshots: true,
+    inlineAssets: true,
+    saveAllAttempts: false,
+    reportPageTitle: 'Automation Exercise - Relatório',
+    embeddedJson: true,
+    overwrite: false,
   },
   e2e: {
     watchForFileChanges: false,
     setupNodeEvents(on, config) {
+      require('cypress-mochawesome-reporter/plugin')(on);
       return config;
     },
   },

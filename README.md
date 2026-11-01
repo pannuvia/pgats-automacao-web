@@ -16,7 +16,8 @@ Validar comportamentos reais da aplicação web, com foco em:
 - JavaScript
 - Page Object Model (POM)
 - GitHub Actions para CI
-- JUnit report para relatórios
+- JUnit report para relatórios de integração
+- HTML report via `cypress-mochawesome-reporter` para visualização no navegador
 - Faker para geração de dados dinâmicos
 
 ## Estrutura do projeto
@@ -25,7 +26,8 @@ Validar comportamentos reais da aplicação web, com foco em:
 - `cypress/support/factories` - geração de dados dinâmicos
 - `cypress/support/constants.js` - URLs, rotas e textos compartilhados
 - `.github/workflows/cypress.yml` - pipeline de CI do GitHub Actions
-- `cypress/reports` - relatórios gerados pela execução
+- `cypress/reports/html/index.html` - relatório HTML final para consulta em navegador
+- `cypress/reports/junit` - relatórios JUnit gerados pela execução
 
 ## Pré-requisitos
 - Node.js 20+
@@ -52,7 +54,9 @@ npx cypress open
 O workflow em `.github/workflows/cypress.yml` executa a suíte automaticamente em push e pull request.
 
 ## Relatórios
-A execução gera relatório JUnit e salva artefatos em `cypress/reports` para acompanhamento de execução e evidência de qualidade.
+A execução gera dois formatos de relatório:
+- `HTML` para visualização direta em navegador em `cypress/reports/html/index.html`
+- `JUnit XML` para uso em CI e integração com ferramentas de análise em `cypress/reports/junit`
 
 ## Resultados esperados
 A suíte cobre cenários de cadastro, login, exclusão, pesquisa, inscrição e compra, e foi validada com execução bem-sucedida em ambiente headless.
