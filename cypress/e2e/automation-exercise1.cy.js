@@ -89,4 +89,14 @@ describe('Automation Exercise', () => {
             .clicarPrimeiroViewProduct()
             .validarDetalhesProduto();
     });
+
+    it('Cenario 9: deve pesquisar um produto e validar os resultados', () => {
+        HomePage.visitar()
+            .validarTelaHome()
+            .clicarProdutos();
+
+        ProductsPage.validarTelaProdutos()
+            .pesquisarProduto('Blue Top')
+            .validarProdutosPesquisados();
+    });
 });

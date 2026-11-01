@@ -29,6 +29,19 @@ class ProductsPage {
     cy.contains(/brand:/i).should('be.visible');
     return this;
   }
+
+  pesquisarProduto(nomeProduto) {
+    cy.get('#search_product').should('be.visible').clear().type(nomeProduto);
+    cy.get('#submit_search').should('be.visible').click();
+    return this;
+  }
+
+  validarProdutosPesquisados() {
+    cy.contains(/searched products/i).should('be.visible');
+    cy.get('.single-products').should('have.length.at.least', 1);
+    cy.contains(/blue top/i).should('be.visible');
+    return this;
+  }
 }
 
 export default new ProductsPage();
