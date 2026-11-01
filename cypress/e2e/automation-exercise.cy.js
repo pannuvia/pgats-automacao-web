@@ -55,9 +55,9 @@ describe('Automation Exercise', () => {
             .validarTelaHome()
             .clicarProdutos();
 
-        ProductsPage.validarTelaProdutos()
-            .validarListaProdutos()
-            .clicarPrimeiroViewProduct()
+        ProductsPage.validarListaProdutos()
+            .validarQuantidadeProdutos()
+            .abrirPrimeiroProduto()
             .validarDetalhesProduto();
     });
 
@@ -66,7 +66,7 @@ describe('Automation Exercise', () => {
             .validarTelaHome()
             .clicarProdutos();
 
-        ProductsPage.validarTelaProdutos()
+        ProductsPage.validarListaProdutos()
             .pesquisarProduto('Blue Top')
             .validarProdutosPesquisados();
     });

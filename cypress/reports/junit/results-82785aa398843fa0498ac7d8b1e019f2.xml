@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="198.422" tests="10" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-11-01T16:50:29" tests="0" file="cypress\e2e\automation-exercise.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Automation Exercise" timestamp="2026-11-01T16:50:29" tests="10" time="198.414" failures="0">
+    <testcase name="Automation Exercise Cenario 1: deve cadastrar um novo usuário, logar e deletar conta" time="19.332" classname="Cenario 1: deve cadastrar um novo usuário, logar e deletar conta">
+    </testcase>
+    <testcase name="Automation Exercise Cenario 2: deve cadastrar novo usuário, fazer login com email e senha corretos, fazer logout e deletar conta" time="23.537" classname="Cenario 2: deve cadastrar novo usuário, fazer login com email e senha corretos, fazer logout e deletar conta">
+    </testcase>
+    <testcase name="Automation Exercise Cenario 3: deve tentar logar com email e senha incorretos" time="9.019" classname="Cenario 3: deve tentar logar com email e senha incorretos">
+    </testcase>
+    <testcase name="Automation Exercise Cenario 4: deve cadastrar um novo usuário e fazer logout" time="22.444" classname="Cenario 4: deve cadastrar um novo usuário e fazer logout">
+    </testcase>
+    <testcase name="Automation Exercise Cenario 5: deve cadastrar um novo usuário e tentar cadastrar novamente com o mesmo email" time="31.501" classname="Cenario 5: deve cadastrar um novo usuário e tentar cadastrar novamente com o mesmo email">
+    </testcase>
+    <testcase name="Automation Exercise Cenario 8: deve verificar a página de produtos e o detalhe do primeiro produto" time="7.480" classname="Cenario 8: deve verificar a página de produtos e o detalhe do primeiro produto">
+    </testcase>
+    <testcase name="Automation Exercise Cenario 9: deve pesquisar um produto e validar os resultados" time="7.508" classname="Cenario 9: deve pesquisar um produto e validar os resultados">
+    </testcase>
+    <testcase name="Automation Exercise Cenario 10: deve verificar a inscrição na home page" time="3.529" classname="Cenario 10: deve verificar a inscrição na home page">
+    </testcase>
+    <testcase name="Automation Exercise Cenario 15: deve registrar antes do checkout e finalizar a compra" time="31.503" classname="Cenario 15: deve registrar antes do checkout e finalizar a compra">
+    </testcase>
+    <testcase name="Automation Exercise Cenario 16: deve fazer login antes do checkout e finalizar a compra" time="37.984" classname="Cenario 16: deve fazer login antes do checkout e finalizar a compra">
+    </testcase>
+  </testsuite>
+</testsuites>

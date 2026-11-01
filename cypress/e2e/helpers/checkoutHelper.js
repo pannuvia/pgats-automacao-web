@@ -4,6 +4,7 @@ import SignupPage from '../pages/SignupPage';
 import CartPage from '../pages/CartPage';
 import CheckoutPage from '../pages/CheckoutPage';
 import ProductsPage from '../pages/ProductsPage';
+import { DADOS_PAGAMENTO } from '../../support/constants';
 import { criarDadosPagamentoPadrao } from '../../support/factories/pagamentoFactory';
 
 export function finalizarCompra({ comentario, usuario = null, logarAntes = false } = {}) {
@@ -15,6 +16,7 @@ export function finalizarCompra({ comentario, usuario = null, logarAntes = false
   }
 
   const dadosPagamento = criarDadosPagamentoPadrao();
+  const dadosPagamentoPadrao = { ...DADOS_PAGAMENTO };
 
   HomePage.clicarProdutos();
   ProductsPage.adicionarPrimeiroProdutoAoCarrinho();
@@ -25,7 +27,7 @@ export function finalizarCompra({ comentario, usuario = null, logarAntes = false
   CheckoutPage.validarDetalhesCheckout()
     .preencherComentario(comentario)
     .clicarPlaceOrder()
-    .preencherDadosPagamento(dadosPagamento)
+    .preencherDadosPagamento(dadosPagamentoPadrao)
     .clicarPayAndConfirmOrder()
     .validarPedidoConfirmado();
 }

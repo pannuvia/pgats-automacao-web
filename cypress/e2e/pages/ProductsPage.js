@@ -1,21 +1,21 @@
 class ProductsPage {
-  clicarProdutos() {
+  abrirListaProdutos() {
     cy.contains('a', 'Products').click();
     return this;
   }
 
-  validarTelaProdutos() {
+  validarListaProdutos() {
     cy.location('pathname').should('eq', '/products');
     cy.contains(/all products/i).should('be.visible');
     return this;
   }
 
-  validarListaProdutos() {
+  validarQuantidadeProdutos() {
     cy.get('.single-products').should('have.length.at.least', 1);
     return this;
   }
 
-  clicarPrimeiroViewProduct() {
+  abrirPrimeiroProduto() {
     cy.get('a[href*="/product_details/"]').first().click();
     return this;
   }

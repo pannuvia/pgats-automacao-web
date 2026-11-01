@@ -1,4 +1,4 @@
-import { BASE_URL, ROUTES } from '../../support/constants';
+import { BASE_URL, ROUTES, TEXTOS } from '../../support/constants';
 
 class HomePage {
   visitar() {
@@ -47,7 +47,7 @@ class HomePage {
   }
 
   validarMensagemInscricaoSucesso() {
-    cy.contains('You have been successfully subscribed!').should('be.visible');
+    cy.contains(TEXTOS.inscricaoSucesso).should('be.visible');
     return this;
   }
 
