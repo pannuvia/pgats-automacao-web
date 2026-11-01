@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { criarEmailAleatorio } from './emailFactory';
 
 export function criarUsuarioAleatorio() {
   const firstName = faker.person.firstName();
@@ -10,7 +11,7 @@ export function criarUsuarioAleatorio() {
     firstName,
     lastName,
     fullName: `${firstName} ${lastName}`,
-    email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${Date.now()}@gmail.com`,
+    email: criarEmailAleatorio(),
     password: 'senha123',
     company: faker.company.name(),
     address: faker.location.streetAddress(),

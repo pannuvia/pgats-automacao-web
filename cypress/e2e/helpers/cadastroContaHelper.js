@@ -11,3 +11,11 @@ export function criarConta(usuario) {
   SignupPage.clicarCriarConta();
   SignupPage.validarContaCriada();
 }
+
+export function criarUsuarioEValidarLogin() {
+  return cy.criarUsuarioAleatorio().then((usuario) => {
+    criarConta(usuario);
+    SignupPage.clicarContinuar().validarUsuarioLogado();
+    return cy.wrap(usuario);
+  });
+}

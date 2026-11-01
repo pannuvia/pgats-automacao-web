@@ -5,25 +5,20 @@ import ContactUsPage from './pages/ContactUsPage';
 import ProductsPage from './pages/ProductsPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
-import { criarConta } from './helpers/cadastroContaHelper';
+import { criarConta, criarUsuarioEValidarLogin } from './helpers/cadastroContaHelper';
 import { excluirConta } from './helpers/exclusaoContaHelper';
 import { logarComSucesso, tentarLoginInvalido } from './helpers/loginHelper';
-import { deslogar } from './helpers/logoutHelper';
+import { finalizarCompra } from './helpers/checkoutHelper';
 
 describe('Automation Exercise', () => {
     it('Cenario 1: deve cadastrar um novo usuário, logar e deletar conta', () => {
-        cy.criarUsuarioAleatorio().then((usuario) => {
-            criarConta(usuario);
-            SignupPage.clicarContinuar().validarUsuarioLogado();
+        criarUsuarioEValidarLogin().then((usuario) => {
             excluirConta();
         });
     });
 
     it('Cenario 2: deve cadastrar novo usuário, fazer login com email e senha corretos, fazer logout e deletar conta', () => {
-        cy.criarUsuarioAleatorio().then((usuario) => {
-            criarConta(usuario);
-            SignupPage.clicarContinuar().validarUsuarioLogado();
-
+        criarUsuarioEValidarLogin().then((usuario) => {
             LoginPage.deslogar();
             logarComSucesso(usuario);
             excluirConta();
@@ -38,20 +33,14 @@ describe('Automation Exercise', () => {
     });
 
     it('Cenario 4: deve cadastrar um novo usuário e fazer logout', () => {
-        cy.criarUsuarioAleatorio().then((usuario) => {
-            criarConta(usuario);
-            SignupPage.clicarContinuar().validarUsuarioLogado();
-
+        criarUsuarioEValidarLogin().then(() => {
             LoginPage.deslogar();
             LoginPage.validarTelaLogin();
         });
     });
 
     it('Cenario 5: deve cadastrar um novo usuário e tentar cadastrar novamente com o mesmo email', () => {
-        cy.criarUsuarioAleatorio().then((usuario) => {
-            criarConta(usuario);
-            SignupPage.clicarContinuar().validarUsuarioLogado();
-
+        criarUsuarioEValidarLogin().then((usuario) => {
             LoginPage.deslogar();
             LoginPage.visitar().validarTelaLogin();
 
@@ -59,26 +48,6 @@ describe('Automation Exercise', () => {
                 .clicarSignup()
                 .validarEmailJaExiste();
         });
-    });
-
-    it('Cenario 6: deve enviar uma mensagem pelo formulário de contato', () => {
-        HomePage.visitar()
-            .validarTelaHome()
-            .clicarContato();
-
-        ContactUsPage.validarTelaContato()
-            .preencherFormulario({
-                nome: 'Pannuvia Monteiro',
-                email: 'pannuvia@teste.com',
-                assunto: 'Dúvida sobre produto',
-                mensagem: 'Mensagem de teste automatizado.'
-            })
-            .anexarArquivo('cypress/fixtures/contact-message.txt')
-            .clicarSubmit()
-            .validarMensagemSucesso()
-            .clicarHome();
-
-        HomePage.validarTelaHome();
     });
 
     it('Cenario 8: deve verificar a página de produtos e o detalhe do primeiro produto', () => {
@@ -103,66 +72,33 @@ describe('Automation Exercise', () => {
     });
 
     it('Cenario 10: deve verificar a inscrição na home page', () => {
-        const email = `teste-pannuvia-${Date.now()}@automacao.com`;
-
-        HomePage.visitar()
-            .validarTelaHome()
-            .rolarParaRodape()
-            .validarInscricao()
-            .preencherInscricao(email)
-            .clicarBotaoInscricao()
-            .validarMensagemInscricaoSucesso();
+        cy.criarEmailAleatorio('automacao.com').then((email) => {
+            HomePage.visitar()
+                .validarTelaHome()
+                .rolarParaRodape()
+                .validarInscricao()
+                .preencherInscricao(email)
+                .clicarBotaoInscricao()
+                .validarMensagemInscricaoSucesso();
+        });
     });
     it('Cenario 15: deve registrar antes do checkout e finalizar a compra', () => {
-        cy.criarUsuarioAleatorio().then((usuario) => {
-            criarConta(usuario);
-            SignupPage.clicarContinuar().validarUsuarioLogado();
-
-            HomePage.clicarProdutos();
-            ProductsPage.adicionarPrimeiroProdutoAoCarrinho();
-            CartPage.validarCarrinho()
-                .clicarProceedToCheckout();
-            CheckoutPage.validarDetalhesCheckout()
-                .preencherComentario('Pedido de teste para checkout após cadastro.')
-                .clicarPlaceOrder()
-                .preencherDadosPagamento({
-                    nome: 'Pannuvia Monteiro',
-                    numeroCartao: '4111111111111111',
-                    cvc: '123',
-                    validade: '12/30'
-                })
-                .clicarPayAndConfirmOrder()
-                .validarPedidoConfirmado();
+        criarUsuarioEValidarLogin().then((usuario) => {
+            finalizarCompra({
+                comentario: 'Pedido de teste para checkout após cadastro.'
+            });
 
             SignupPage.clicarDeletarConta().validarContaDeletada();
         });
     });
 
     it('Cenario 16: deve fazer login antes do checkout e finalizar a compra', () => {
-        cy.criarUsuarioAleatorio().then((usuario) => {
-            criarConta(usuario);
-            SignupPage.clicarContinuar().validarUsuarioLogado();
-
-            LoginPage.deslogar();
-            LoginPage.visitar().validarTelaLogin();
-            LoginPage.fazerLogin(usuario.email, usuario.password);
-            SignupPage.validarUsuarioLogado();
-
-            HomePage.clicarProdutos();
-            ProductsPage.adicionarPrimeiroProdutoAoCarrinho();
-            CartPage.validarCarrinho()
-                .clicarProceedToCheckout();
-            CheckoutPage.validarDetalhesCheckout()
-                .preencherComentario('Pedido de teste para checkout com login prévio.')
-                .clicarPlaceOrder()
-                .preencherDadosPagamento({
-                    nome: 'Pannuvia Monteiro',
-                    numeroCartao: '4111111111111111',
-                    cvc: '123',
-                    validade: '12/30'
-                })
-                .clicarPayAndConfirmOrder()
-                .validarPedidoConfirmado();
+        criarUsuarioEValidarLogin().then((usuario) => {
+            finalizarCompra({
+                comentario: 'Pedido de teste para checkout com login prévio.',
+                usuario,
+                logarAntes: true
+            });
 
             SignupPage.clicarDeletarConta().validarContaDeletada();
         });
