@@ -1,22 +1,22 @@
 class ProductsPage {
-  clicarProdutos() {
+  abrirListaProdutos() {
     cy.contains('a', 'Products').click();
     return this;
   }
 
-  validarTelaProdutos() {
+  validarListaProdutos() {
     cy.location('pathname').should('eq', '/products');
     cy.contains(/all products/i).should('be.visible');
     return this;
   }
 
-  validarListaProdutos() {
-    cy.get('.product-image-wrapper, .single-products').should('have.length.at.least', 1);
+  validarQuantidadeProdutos() {
+    cy.get('.single-products').should('have.length.at.least', 1);
     return this;
   }
 
-  clicarPrimeiroViewProduct() {
-    cy.get('.product-image-wrapper').first().contains('View Product').click();
+  abrirPrimeiroProduto() {
+    cy.get('a[href*="/product_details/"]').first().click();
     return this;
   }
 
@@ -27,6 +27,12 @@ class ProductsPage {
     cy.contains(/availability:/i).should('be.visible');
     cy.contains(/condition:/i).should('be.visible');
     cy.contains(/brand:/i).should('be.visible');
+    return this;
+  }
+
+  adicionarPrimeiroProdutoAoCarrinho() {
+    cy.get('a[data-product-id]').first().click({ force: true });
+    cy.contains('View Cart').click();
     return this;
   }
 

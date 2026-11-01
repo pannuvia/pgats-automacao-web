@@ -1,6 +1,8 @@
+import { BASE_URL, ROUTES, TEXTOS } from '../../support/constants';
+
 class HomePage {
   visitar() {
-    cy.visit('https://automationexercise.com/');
+    cy.visit(`${BASE_URL}${ROUTES.home}`);
     return this;
   }
 
@@ -21,6 +23,31 @@ class HomePage {
 
   clicarProdutos() {
     cy.get('a[href="/products"]').should('be.visible').click();
+    return this;
+  }
+
+  rolarParaRodape() {
+    cy.scrollTo('bottom');
+    return this;
+  }
+
+  validarInscricao() {
+    cy.contains(/subscription/i).should('be.visible');
+    return this;
+  }
+
+  preencherInscricao(email) {
+    cy.get('#susbscribe_email').should('be.visible').clear().type(email);
+    return this;
+  }
+
+  clicarBotaoInscricao() {
+    cy.get('#subscribe').should('be.visible').click();
+    return this;
+  }
+
+  validarMensagemInscricaoSucesso() {
+    cy.contains(TEXTOS.inscricaoSucesso).should('be.visible');
     return this;
   }
 
