@@ -111,4 +111,27 @@ describe('Automation Exercise', () => {
             .clicarBotaoInscricao()
             .validarMensagemInscricaoSucesso();
     });
-});
+    it('Cenario 15: deve registrar antes do checkout e finalizar a compra', () => {
+        cy.criarUsuarioAleatorio().then((usuario) => {
+            criarConta(usuario);
+            SignupPage.clicarContinuar().validarUsuarioLogado();
+
+            HomePage.clicarProdutos();
+            ProductsPage.adicionarPrimeiroProdutoAoCarrinho()
+                .validarCarrinho()
+                .clicarProceedToCheckout()
+                .validarDetalhesCheckout()
+                .preencherComentario('Pedido de teste para checkout após cadastro.')
+                .clicarPlaceOrder()
+                .preencherDadosPagamento({
+                    nome: 'Pannuvia Monteiro',
+                    numeroCartao: '4111111111111111',
+                    cvc: '123',
+                    validade: '12/30'
+                })
+                .clicarPayAndConfirmOrder()
+                .validarPedidoConfirmado();
+
+            SignupPage.clicarDeletarConta().validarContaDeletada();
+        });
+    });});
